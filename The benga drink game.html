@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Benga Drink</title>
+  <!-- Import a horror-style font for the Game Over screen -->
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .game-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #scene {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+    }
+    p {
+      font-size: 1.2em;
+      line-height: 1.6em;
+      margin-bottom: 1em;
+    }
+    button {
+      background-color: #333;
+      color: #eee;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    /* Scary Game Over Screen */
+    .game-over {
+      background-color: #111;
+      color: red;
+      font-family: 'Creepster';
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<bod
+  <!-- Sound Effect ad Bckd Music -->
+  <audio id="bgMusic" src="hbgm.mp3" loop></audio>
+  <audio id="clickSound" src="clsd.mp3"></audio>
+  <audio id="gameOverSound" src="gvm.mp3"></audio>
+  
+  <div class="game-container">
+    <div id="scene">
+      <h1>The Benga Drink</h1>
+      <p>You awaken on a desolate road leading into Mankachar--a town draped in perpetual fog, its ancient streets whispering dark secrets. Your brother, who once ventured here to work for BengaBhenga, has mysteriously vanished. Determined and haunted by loss, you step into this eerie realm in search of answers.</p>
+      <button onclick="choose('meetNiaz')">Enter Mankachar</button>
+    </div>
+  </div>
+
+  <script>
+    // Helper to update the scene with smooth fade transitions
+    function updateScene(content) {
+      var scene = document.getElementById("scene");
+      scene.style.opacity = 0;
+      setTimeout(function(){
+        scene.innerHTML = content;
+        scene.style.opacity = 1;
+      }, 500);
+    }
+    
+    // Play a sound effect by its element id
+    function playSound(id) {
+      var sound = document.getElementById(id);
+      sound.currentTime = 0;
+      sound.play();
+    }
+    
+    function choose(choice) {
+      if(choice === 'meetNiaz'){
+        playSound('bgMusic');
+        updateScene(`
+          <h1>Mankachar Town</h1>
+          <p>The fog swirls as you wander the cracked cobblestones. A solitary figure emerges from the gloom--a sharply dressed man with a knowing smirk. It's Niaz, a local whose reputation for valuing "curves" is as infamous as the town's mysteries.</p>
+          <p><strong>Niaz:</strong> "So, you seek your long-lost brother, do you? In Mankachar, nothing comes free--not even sorrow. If you want any clue about him, you must first prove you appreciate beauty. Bring me the finest curves this town has to offer."</p>
+          <button onclick="choose('acceptNiaz')">Agree to fetch the curves</button>
+          <button onclick="choose('refuseNiaz')">Decline his demand</button>
+        `);
+      } 
+      else if(choice === 'refuseNiaz'){
+        playSound('gameOverSound');
+        updateScene(`
+          <div class="game-over">
+            <h1>GAME OVER</h1>
+            <p>Niaz's eyes narrow in disdain. "Without curves, there are no answers. You've chosen ignorance in a realm where knowledge is currency." The darkness swallows you as your quest ends abruptly.</p>
+            <button onclick="choose('restart')">Restart Game</button>
+          </div>
+        `);
+      } 
+      else if(choice === 'acceptNiaz'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Niaz's Challenge Accepted</h1>
+          <p>You nod and vow to bring him what he desires. Niaz's smile grows wider as he scribbles an address on a scrap of paper.</p>
+          <p><strong>Niaz:</strong> "Excellent. Seek out Waliul at his Curve Shop. He is the curator of beauty here. Return with his finest curves, and I shall reveal the next clue about your brother's fate."</p>
+          <button onclick="choose('meetWaliul')">Proceed to the Curve Shop</button>
+        `);
+      } 
+      else if(choice === 'meetWaliul'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>The Curve Shop</h1>
+          <p>You arrive at a small, dimly lit shop where the air is thick with incense and whispered legends. Behind a counter laden with shimmering objects stands Waliul--a charismatic figure whose eyes sparkle with mischief and wisdom.</p>
+          <p><strong>Waliul:</strong> "Welcome, traveler. Feast your eyes on these curves--each a testament to Mankachar's hidden allure. But be warned, beauty here is both a gift and a curse. The Benga Drink, they say, is as powerful as it is perilous."</p>
+          <button onclick="choose('curveForYourself')">Attempt to keep a curve for yourself</button>
+          <button onclick="choose('takeCurves')">Take the curves to Niaz</button>
+        `);
+      }
+      else if(choice === 'curveForYourself'){
+        playSound('gameOverSound');
+        updateScene(`
+          <div class="game-over">
+            <h1>GAME OVER</h1>
+            <p>Greed overwhelms you. As you clutch a prized curve, the mystical energies of Mankachar recoil in fury. The shop dissolves into darkness, and your journey ends in bitter regret.</p>
+            <button onclick="choose('restart')">Restart Game</button>
+          </div>
+        `);
+      }
+      else if(choice === 'takeCurves'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Return to Niaz</h1>
+          <p>With the delicate curves safely in hand, you retrace your steps to the spot where Niaz waits under a flickering streetlamp.</p>
+          <p><strong>Niaz:</strong> "Marvelous! These curves sing with the spirit of Mankachar. Listen closely--the next piece of the puzzle lies with Rafiul, the keeper of forgotten wisdom. His words may light the way to your brother's fate, or plunge you deeper into despair."</p>
+          <button onclick="choose('meetRafiul')">Seek out Rafiul</button>
+          <button onclick="choose('localsMenu3')">Gather insights from the locals</button>
+        `);
+      }
+      // Locals Menu for Scene 3 (from Niaz's return)
+      else if(choice === 'localsMenu3'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Local Voices</h1>
+          <p>Choose a local to talk to:</p>
+          <button onclick="choose('tashrifLocal3')">Talk to Tashrif</button>
+          <button onclick="choose('nayeemLocal3')">Talk to Nayeem</button>
+          <button onclick="choose('backToReturnNiaz')">Back</button>
+        `);
+      }
+      else if(choice === 'tashrifLocal3'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Tashrif Speaks</h1>
+          <p><strong>Tashrif:</strong> "Mankachar is a labyrinth of sorrow and secrets. BengaBhenga's legacy is as cursed as it is grand."</p>
+          <button onclick="choose('localsMenu3')">Back</button>
+        `);
+      }
+      else if(choice === 'nayeemLocal3'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Nayeem Speaks</h1>
+          <p><strong>Nayeem:</strong> "Heed my words--the allure of the Benga Drink masks a bitter truth. Tread carefully, for every secret here exacts a heavy toll."</p>
+          <button onclick="choose('localsMenu3')">Back</button>
+        `);
+      }
+      else if(choice === 'backToReturnNiaz'){
+        playSound('clickSound');
+        choose('takeCurves');
+      }
+      // Scene 4: Rafiul's Wisdom
+      else if(choice === 'meetRafiul'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Rafiul's Wisdom</h1>
+          <p>You enter a timeworn building where candlelight flickers across faded murals. Rafiul, with eyes heavy from witnessing too much, greets you solemnly.</p>
+          <p><strong>Rafiul:</strong> "I sense your anguish and your desperate search. Your brother, like many lost souls, was seduced by the promises of BengaBhenga--a company steeped in power and dark lore. The true mastermind is Sunny, and my own fate was sealed when I dared probe too deeply."</p>
+          <p><strong>Rafiul:</strong> "But be warned: if you press too hard for forbidden knowledge, the price may be your life."</p>
+          <button onclick="choose('threatenRafiul')">Threaten him for more details</button>
+          <button onclick="choose('meetMehtab')">Thank him and seek out Mehtab</button>
+          <button onclick="choose('localsMenu4')">Listen to local voices</button>
+        `);
+      }
+      else if(choice === 'threatenRafiul'){
+        playSound('gameOverSound');
+        updateScene(`
+          <div class="game-over">
+            <h1>GAME OVER</h1>
+            <p>Your harsh words shock Rafiul, and the ancient curses of Mankachar awaken. In an instant, the very shadows consume you, leaving no trace of your existence.</p>
+            <button onclick="choose('restart')">Restart Game</button>
+          </div>
+        `);
+      }
+      // Locals Menu for Scene 4 (from Rafiul)
+      else if(choice === 'localsMenu4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Local Voices</h1>
+          <p>Choose a local to talk to:</p>
+          <button onclick="choose('tashrifLocal4')">Talk to Tashrif</button>
+          <button onclick="choose('nayeemLocal4')">Talk to Nayeem</button>
+          <button onclick="choose('naemLocal4')">Talk to Naem</button>
+          <button onclick="choose('akhiratLocal4')">Talk to Akhirat</button>
+          <button onclick="choose('emranLocal4')">Talk to Emran</button>
+          <button onclick="choose('lakibulLocal4')">Talk to Lakibul</button>
+          <button onclick="choose('backToRafiul')">Back</button>
+        `);
+      }
+      else if(choice === 'tashrifLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Tashrif Speaks</h1>
+          <p><strong>Tashrif:</strong> "Mankachar has its own rules. The moment you step in, it starts rewriting your fate. Have you noticed the whispers in the wind? They know your name."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'nayeemLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Nayeem Speaks</h1>
+          <p><strong>Nayeem:</strong> "Do you feel it? The town is watching. It knows you don’t belong, and it won’t let you leave unchanged."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'naemLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Naem Speaks</h1>
+          <p><strong>Naem:</strong> "The Benga Drink is a vessel of dark power, an elixir that binds fate with every drop. Trust not its seductive promise."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'akhiratLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Akhirat Speaks</h1>
+          <p><strong>Akhirat:</strong> "Every soul in Mankachar is entwined with a curse. The Benga Drink binds us all in a web of destiny and doom."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'emranLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Emran Speaks</h1>
+          <p><strong>Emran:</strong> "They say that even the sweetest promises hide bitter truths. Beware the lure of power, for it devours the unwary."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'lakibulLocal4'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Lakibul Speaks</h1>
+          <p><strong>Lakibul:</strong> "The power structures here are built on lies and sacrifices. BengaBhenga is not merely a company--it's an empire cloaked in deception. Stay vigilant."</p>
+          <button onclick="choose('localsMenu4')">Back</button>
+        `);
+      }
+      else if(choice === 'backToRafiul'){
+        playSound('clickSound');
+        choose('meetRafiul');
+      }
+      // Scene 5: Mehtab's Revelation
+      else if(choice === 'meetMehtab'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Mehtab's Revelation</h1>
+          <p>You find Mehtab in a secluded courtyard, his face etched with regret and defiance. Once a trusted insider of BengaBhenga, he was exiled for daring to glimpse the sinister truth behind the curtain.</p>
+          <p><strong>Mehtab:</strong> "I was once part of the inner circle--until I learned too much. BengaBhenga is built on dark sacrifices and forbidden ambitions. I lost everything the day I discovered the price of truth."</p>
+          <p><strong>Mehtab:</strong> "If you wish to uncover your brother's fate, you must venture to the headquarters. But be warned: once you cross that threshold, there is no turning back."</p>
+          <button onclick="choose('goHQ')">Venture to the Headquarters</button>
+          <button onclick="choose('localsMenu5')">Seek further insights from the locals</button>
+        `);
+      }
+      // Locals Menu for Scene 5
+      else if(choice === 'localsMenu5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Local Voices</h1>
+          <p>Choose a local to talk to:</p>
+          <button onclick="choose('tashrifLocal5')">Talk to Tashrif</button>
+          <button onclick="choose('nayeemLocal5')">Talk to Nayeem</button>
+          <button onclick="choose('naemLocal5')">Talk to Naem</button>
+          <button onclick="choose('akhiratLocal5')">Talk to Akhirat</button>
+          <button onclick="choose('emranLocal5')">Talk to Emran</button>
+          <button onclick="choose('lakibulLocal5')">Talk to Lakibul</button>
+          <button onclick="choose('backToMehtab')">Back</button>
+        `);
+      }
+      else if(choice === 'tashrifLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Tashrif Speaks</h1>
+          <p><strong>Tashrif:</strong> "The deeper you dig, the closer you get to the truth. But some truths should remain buried, for your own good."</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'nayeemLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Nayeem Speaks</h1>
+          <p><strong>Nayeem:</strong> "The Benga Drink isn’t just a beverage—it’s a contract. Every sip ties you closer to its curse. And once you’re bound, there’s no escape."</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'naemLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Naem Speaks</h1>
+          <p><strong>Naem:</strong> "People think BengaBhenga is just a business. But its foundations are older than this town itself. Older than history. Maybe even older than time."</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'akhiratLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Akhirat Speaks</h1>
+          <p><strong>Akhirat:</strong> "Every night, the town resets itself. Like a wound that never heals, like a nightmare that never ends. Do you still think you can win?"</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'emranLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Emran Speaks</h1>
+          <p><strong>Emran:</strong> "You’re chasing shadows, but what if the shadows start chasing you? There’s a reason we don’t ask too many questions."</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'lakibulLocal5'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Lakibul Speaks</h1>
+          <p><strong>Lakibul:</strong> "There used to be a man like you, searching for his lost brother. He found him, but by then, he wished he hadn’t."</p>
+          <button onclick="choose('localsMenu5')">Back</button>
+        `);
+      }
+      else if(choice === 'backToMehtab'){
+        playSound('clickSound');
+        choose('meetMehtab');
+      }
+      // Scene 6: The Headquarters
+      else if(choice === 'goHQ'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>The Headquarters</h1>
+          <p>You stand before a formidable building exuding cold power and menace. As you approach, uniformed guards block your path, their expressions as unmoving as stone.</p>
+          <button onclick="choose('attackGuards')">Attack the Guards</button>
+          <button onclick="choose('requestGuards')">Request entry</button>
+        `);
+      }
+      else if(choice === 'requestGuards'){
+        playSound('gameOverSound');
+        updateScene(`
+          <div class="game-over">
+            <h1>GAME OVER</h1>
+            <p>Your plea falls on deaf ears. The guards, unmoved by your desperation, forcefully turn you away. You dont belong here.</p>
+            <button onclick="choose('restart')">Restart Game</button>
+          </div>
+        `);
+      }
+      else if(choice === 'attackGuards'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Breaking Through</h1>
+          <p>Fueled by grim determination, you launch a surprise attack on the guards. After a brief, brutal struggle, you overpower them and force your way into the inner sanctum of the headquarters.</p>
+          <button onclick="choose('meetSunny')">Enter Sunny's Office</button>
+        `);
+      }
+      // Scene 7: Sunny's Office
+      else if(choice === 'meetSunny'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Sunny's Office</h1>
+          <p>You step into a lavish, shadowy office. Antique furniture, dim lighting, and an air of ominous calm greet you. At a massive mahogany desk sits Sunny, whose cool demeanor conceals the darkness within. He offers you a glass containing the fabled Benga Drink.</p>
+          <p><strong>Sunny:</strong> "Welcome, seeker. Have a seat and savor our legendary Benga Drink. In its depths lie gossips, secrets, and perhaps the truth about your brother."</p>
+          <button onclick="choose('askTruth')">Tell me the truth about my brother</button>
+          <button onclick="choose('attackSunny')">Attack Sunny</button>
+        `);
+      }
+      else if(choice === 'askTruth'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>The Final Revelation</h1>
+          <p>You sip the drink, its taste both intoxicating and bitter. Sunny's eyes harden as he leans forward.</p>
+          <p><strong>Sunny:</strong> "Listen well. The drink you savored was not brewed from mere ingredients--it was forged from the very essence of your brother. In our relentless quest for perfection, his sacrifice was the price we had to pay. Now, you shall join this eternal legacy."</p>
+          <button onclick="choose('endingTruth')">You are Evil Sunny</button>
+        `);
+      }
+      else if(choice === 'attackSunny'){
+        playSound('gameOverSound');
+        updateScene(`
+          <div class="game-over">
+            <h1>GAME OVER</h1>
+            <p>Your sudden attack is met with cold precision. In moments, Sunny's guards and his own lethal skill overwhelm you. Your struggle ends in a crimson, silent finale--your brother's fate remains forever shrouded in mystery.</p>
+            <button onclick="choose('credits')">View Credits</button>
+          </div>
+        `);
+      }
+      else if(choice === 'endingTruth'){
+        playSound('gameOverSound');
+        updateScene(`
+          <h1>Eternal Sacrifice</h1>
+          <p>The room dissolves into darkness as you feel your essence merge with the cursed concoction. Sunny's final words echo ominously:</p>
+          <p><strong>Sunny:</strong> "So it is written--the one who seeks the truth becomes the truth. You are now forever bound to The Benga Drink, a living testament to our cursed ambition."</p>
+          <button onclick="choose('credits')">View Credits</button>
+        `);
+      }
+      else if(choice === 'credits'){
+        playSound('clickSound');
+        updateScene(`
+          <h1>Credits</h1>
+          <p><strong>The Benga Drink</strong></p>
+          <p>Story & Game Design: Sunny uz Zaman</p>
+          <p>Dialouges written by: Chat GPT</p>
+          <p>Featuring Characters:</p>
+          <ul>
+            <li>Niaz – The Mysterious Curve Lover</li>
+            <li>Waliul – Keeper of The Curves</li>
+            <li>Rafiul – Keeper of Forgotten Wisdom</li>
+            <li>Mehtab – The Exiled Truth-Seeker</li>
+            <li>Sunny – The Mastermind</li>
+            <li>Tashrif, Nayeem, Naem, Akhirat, Emran, Lakibul – Locals of Mankachar</li>
+          </ul>
+          <p>Special Thanks to all who inspired this dark tale.</p>
+          <button onclick="choose('restart')">Restart Game</button>
+        `);
+      }
+      else if(choice === 'restart'){
+        playSound('clickSound');
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
